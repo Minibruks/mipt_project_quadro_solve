@@ -5,8 +5,7 @@
 #define SMALL_INT 1e-6
 
 /// Params description
-enum params
-{
+enum params {
     a, ///< x^2 coefficient
     b, ///< x coefficient
     c, ///< free term
@@ -25,7 +24,7 @@ int quadro_solve(double a, double b, double c, double *x1, double *x2) {
     assert(x1 != NULL);
     assert(x2 != NULL);
     
-    if (a == 0 && b == 0 && c == 0){
+    if (a == 0 && b == 0 && c == 0) {
         return -1;
     } else {
         if (a == 0) {
