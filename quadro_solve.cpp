@@ -1,8 +1,53 @@
+/**
+ * @brief This file contains functions that calculate the number of roots of a quadratic equation
+ * and their values, if any exist
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
-#define SMALL_DOUBLE_FOR_CMP_WITH_ZERO 1e-6
+double DBL_EPSILON = 1e-6;
+
+enum NumOfSolutions {
+    INF_SOLUTIONS = -1,
+    ZERO_SOLUTIONS = 0,
+    ONE_SOLUTION = 1,
+    TWO_SOLUTIONS = 2
+};
+
+enum TrueFalse {
+    TRUE = 1,
+    FALSE = 0
+};
+
+/**
+ * @brief A function that compares double with zero
+ * @param term
+ * @return TrueFalse
+ */
+
+unsigned short zeroComprasion(double term) {
+    if (fabs(term) < DBL_EPSILON) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+/**
+ * @brief A function that counts the value of x for two specified variables
+ * @param x_coef
+ * @param free_term
+ * @param x the result will be here
+ * @return NumOfSolutions
+ */
+
+int solveLinear(double x_coef, double free_term, double* x) {
+    assert(x != NULL);
+    assert(zeroComprasion(x_coef));
+    *x = -free_term / x_coef;
+    return ONE_SOLUTION;
+}
 
 /** \brief A function that returns the number of roots of a square equation and their values
     \version 1.0.0
@@ -10,53 +55,42 @@
     \param[in] b x coefficient
     \param[in] c free term
     \param[out] x1, x2
-    \return -1 - infinite number of solutions, 0 - no roots, 1 - one root, 2 - two roots
- */
+    \return NumOfSolutions
+*/
 
-enum num_of_solves {
-    UNDEFINED_SOLVES = -1,
-    ZERO_SOLVES = 0,
-    ONE_SOLVE = 1,
-    TWO_SOLVES = 2
-};
-
-void linearSolve(double b, double c, double* x) {
-    *x = -c / b;
-}
-
-int quadroSolve(double a, double b, double c, double* x1, double* x2) {
+int solveQuadratic(double a, double b, double c, double* x1, double* x2) {
     assert(x1 != NULL);
     assert(x2 != NULL);
+    assert(x1 != x2);
 
-    if (fabs(a) < SMALL_DOUBLE_FOR_CMP_WITH_ZERO &&
-    fabs(b) < SMALL_DOUBLE_FOR_CMP_WITH_ZERO && fabs(c) < SMALL_DOUBLE_FOR_CMP_WITH_ZERO) {
-        return UNDEFINED_SOLVES;
-    } else if (fabs(a) < SMALL_DOUBLE_FOR_CMP_WITH_ZERO) {
-        if (fabs(b) < SMALL_DOUBLE_FOR_CMP_WITH_ZERO) {
-            return ZERO_SOLVES;
+    if (zeroComprasion(a) &&
+    zeroComprasion(b) && zeroComprasion(c)) {
+        return INF_SOLUTIONS;
+    } else if (zeroComprasion(a)) {
+        if (zeroComprasion(b)) {
+            return ZERO_SOLUTIONS;
         } else {
-            linearSolve(b, c, x1);
+            solveLinear(b, c, x1);
             *x2 = *x1;
             return 1;
         }
     } else {
         double D = 0;
         D = b * b - 4 * a * c;
-        if (D < 0) {
-            return ZERO_SOLVES;
+        if (D < -DBL_EPSILON) {
+            return ZERO_SOLUTIONS;
         }
 
         double sqrt_D = sqrt(D);
         *x1 = (-b - sqrt_D) / (2 * a);
         *x2 = (-b + sqrt_D) / (2 * a);
 
-        if (fabs(D) < SMALL_DOUBLE_FOR_CMP_WITH_ZERO) {
-            return ONE_SOLVE;
+        if (zeroComprasion(D)) {
+            return ONE_SOLUTION;
         }
 
-        if (D > 0) {
-            assert(x1 != x2);
-            return TWO_SOLVES;
+        if (!zeroComprasion(D)) {
+            return TWO_SOLUTIONS;
         }
     }
     return 0;
