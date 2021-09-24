@@ -20,7 +20,7 @@ enum NumOfSolutions {
 };
 
 /**
- * @brief A function that compares double with zero
+ * @brief A function that compares doubles
  * @version 1.0.0
  * @param term
  * @return TrueFalse
@@ -37,7 +37,7 @@ short cmp(double a = 0, double b = 0);
  */
 int solveLinear(double x_coef, double free_term, double* x);
 
-/** @brief A function that returns the number of roots of a square equation and their values
+/** @brief A function that solves quadratic equation
     @version 1.0.0
     @param[in] a x^2 coefficient
     @param[in] b x coefficient
