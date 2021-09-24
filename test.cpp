@@ -6,12 +6,11 @@
 #include "quadro_solve.cpp"
 
 /**
- * @brief A function for reading float values from terminal
+ * @brief A function for reading quadratic equation coefficients from terminal
  * @version 1.0.0
  * @param a
  * @param b
  * @param c
- * @return Nothing
  */
 
 void readCoefficients(double* a, double* b, double* c) {
@@ -19,9 +18,9 @@ void readCoefficients(double* a, double* b, double* c) {
     assert(b != NULL);
     assert(c != NULL);
 
-    printf("Введите ТРИ числа:\n");
+    printf("Please enter THREE numbers\n");
     while (scanf("%lg %lg %lg", a, b, c) != 3) {
-        printf("Вы не ввели число\n");
+        printf("It seems that you did not enter THREE numbers\n");
         scanf("%*s");
     }
 }
